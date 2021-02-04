@@ -1,4 +1,83 @@
 @font-face {
-  font-family: Roboto;
-  src: url("fonts/Roboto-Regular.ttf");
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-Light.ttf');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-LightOblique.ttf');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-Book.ttf');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-BookOblique.ttf');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-Roman.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-Oblique.ttf');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-Medium.ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-MediumOblique.ttf');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-Heavy.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-HeavyOblique.ttf');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-Black.ttf');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('fonts/Avenir-BlackOblique.ttf');
+  font-weight: 700;
+  font-style: italic;
 }

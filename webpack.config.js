@@ -12,7 +12,13 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {
-    extensions: ['.js', '.json']
+    extensions: ['.js', '.json'],
+    alias: {
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@server': path.resolve(__dirname, 'src/server'),
+      '@pages': path.resolve(__dirname, 'src/pages'),
+      '@': path.resolve(__dirname, 'src')
+    }
   },
   optimization: {
     splitChunks: {
@@ -22,9 +28,16 @@ module.exports = {
   devServer: {
     port: 3000
   },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
   plugins: [
     new HTMLWebpackPlugin({
-      template: './index.html'
+      template: './index.html',
+      favicon: './favicon.svg',
+      filename: './index.html',
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({

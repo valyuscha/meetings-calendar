@@ -1,6 +1,22 @@
 @import "../node_modules/normalize.css";
 @import "fonts";
 
-*{
+* {
   font-family: Roboto, sans-serif;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+body,
+select,
+button {
+  color: #464646;
+}
+
+#root {
+  width: 90%;
+  max-width: 950px;
+  margin: 0 auto;
+  text-align: center;
 }
