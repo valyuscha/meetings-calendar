@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
 
-    $newEventNameInput.isValid = $newEventNameInput.value.length >= 2
+    $newEventNameInput.isValid = $newEventNameInput.value.trim().length >= 2
 
     if (!$newEventNameInput.isValid) {
       addClass($nameFieldErrorMessage, 'showErrorMessage')

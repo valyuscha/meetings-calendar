@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
 
-    $meetingEditName.isValid = $meetingEditName.value.length >= 2
+    $meetingEditName.isValid = $meetingEditName.value.trim().length >= 2
 
     if (!$meetingEditName.isValid) {
       addClass($nameFieldErrorMessage, 'showErrorMessage')
