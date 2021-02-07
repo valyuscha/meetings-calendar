@@ -17,6 +17,7 @@ module.exports = {
       '@components': path.resolve(__dirname, 'src/components'),
       '@server': path.resolve(__dirname, 'src/server'),
       '@pages': path.resolve(__dirname, 'src/pages'),
+      '@assets': path.resolve(__dirname, 'src/assets'),
       '@': path.resolve(__dirname, 'src')
     }
   },
@@ -63,6 +64,10 @@ module.exports = {
         test: /\.(ttf|woff|woff2|ext)$/,
         use:
           ['file-loader']
+      },
+      {
+        test: /\.(png|jpg|jpeg|svg|gif|ico)$/,
+        use: ['file-loader']
       },
       {
         test: /\.js$/,

@@ -1,21 +1,20 @@
-import {CalendarPage} from '@pages'
+import {
+  CalendarPage,
+  AddNewMeetingPage,
+  MeetingInfoPage,
+  MeetingEditPage
+} from '@pages'
 import './styles.scss'
 
 const $rootBlock = document.getElementById('root')
 
-const AddNewMeetingPage = document.createElement('div')
-AddNewMeetingPage.innerHTML = '<h1>Hello world</h1>'
+$rootBlock.appendChild(CalendarPage)
+$rootBlock.appendChild(AddNewMeetingPage)
+$rootBlock.appendChild(MeetingInfoPage)
+$rootBlock.appendChild(MeetingEditPage)
 
-const render = () => {
-  const activePage = localStorage.getItem('activePage')
-  $rootBlock.appendChild(CalendarPage)
+const meetingsArr = JSON.parse(localStorage.getItem('meetingsArr'))
 
-  if (activePage === 'Add new meeting page') {
-    $rootBlock.removeChild(CalendarPage)
-    $rootBlock.appendChild(AddNewMeetingPage)
-  }
+if (!meetingsArr) {
+  localStorage.setItem('meetingsArr', JSON.stringify([]))
 }
-
-render()
-
-export default render
