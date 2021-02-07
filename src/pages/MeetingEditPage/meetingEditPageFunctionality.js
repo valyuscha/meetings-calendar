@@ -79,9 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
       addClass($nameFieldErrorMessage, 'showErrorMessage')
       removeClass($nameFieldErrorMessage, 'hideErrorMessage')
 
-      if ($meetingEditName.value.length === 0) {
+      if ($meetingEditName.value.trim().length === 0) {
         $nameFieldErrorMessage.textContent = 'Enter the field'
-      } else if ($meetingEditName.value.length === 1) {
+      } else if ($meetingEditName.value.trim().length === 1) {
         $nameFieldErrorMessage.textContent = 'Name of the event is too short'
       }
     } else {

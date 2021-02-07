@@ -99,9 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
       addClass($nameFieldErrorMessage, 'showErrorMessage')
       removeClass($nameFieldErrorMessage, 'hideErrorMessage')
 
-      if ($newEventNameInput.value.length === 0) {
+      if ($newEventNameInput.value.trim().length === 0) {
         $nameFieldErrorMessage.textContent = 'Enter the field'
-      } else if ($newEventNameInput.value.length === 1) {
+      } else if ($newEventNameInput.value.trim().length === 1) {
         $nameFieldErrorMessage.textContent = 'Name of the event is too short'
       }
     } else {
