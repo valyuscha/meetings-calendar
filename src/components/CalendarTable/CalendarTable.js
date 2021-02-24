@@ -2,6 +2,7 @@ import {time} from '@server'
 import {addClass} from '@/helpers'
 import {deleteMeeting} from '@assets'
 import {calendarTableFunctionality} from './calendarTableFunctionality'
+import {authorizeModalFunctionality} from '../AuthorizeModal/authoriseModalFunctionality'
 import './style.scss'
 
 const tableHeader = ['Name', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
@@ -9,6 +10,15 @@ const meetingsArr = JSON.parse(localStorage.getItem('meetingsArr'))
 
 export const displayPlanedMeetings = (planedMeetingsArr) => {
   const $calendarTableCell = document.querySelectorAll('.calendar-table__cell_meetings')
+  const activeUser = JSON.parse(localStorage.getItem('activeUser'))
+
+  const deleteMeetingBtnClasses = ['delete-meeting']
+
+  if (activeUser && activeUser.canUserDeleteMeeting) {
+    deleteMeetingBtnClasses.push('show')
+  } else {
+    deleteMeetingBtnClasses.push('hide')
+  }
 
   $calendarTableCell.forEach(cell => {
     cell.innerHTML = ''
@@ -23,7 +33,7 @@ export const displayPlanedMeetings = (planedMeetingsArr) => {
         cell.innerHTML = `
           <div class="calendar-table__cell_content" style="cursor: pointer">
             <p>${meeting.meetingName}</p> 
-            <button id="${meeting.id}" class="delete-meeting">
+            <button id="${meeting.id}" class="${deleteMeetingBtnClasses.join(' ')}">
               <img src="${deleteMeeting}">
             </button>
           </div>
@@ -33,6 +43,7 @@ export const displayPlanedMeetings = (planedMeetingsArr) => {
   })
 
   calendarTableFunctionality()
+  authorizeModalFunctionality()
 }
 
 document.addEventListener('DOMContentLoaded', () => {

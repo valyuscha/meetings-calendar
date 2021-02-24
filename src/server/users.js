@@ -1,30 +1,11 @@
+import {User, Admin} from '@/models'
+
 export const users = [
-  {
-    id: 1,
-    name: 'Ann'
-  },
-  {
-    id: 2,
-    name: 'Valentine'
-  },
-  {
-    id: 3,
-    name: 'Vladimir'
-  },
-  {
-    id: 4,
-    name: 'Sam'
-  },
-  {
-    id: 5,
-    name: 'Andrey'
-  },
-  {
-    id: 6,
-    name: 'Katherine'
-  },
-  {
-    id: 7,
-    name: 'Suzi'
-  }
+  new Admin(1, 'Ann', 28),
+  new Admin(2, 'Valentine', 16),
+  new User(3, 'Vladimir', 38),
+  new User(4, 'Sam', 23),
+  new User(5, 'Andrey', 18),
+  new Admin(6, 'Kath'),
+  new Admin(7, 'Suzi', 24)
 ]

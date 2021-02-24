@@ -4,6 +4,15 @@ import './meetingInfoPageFunctionality'
 import './style.scss'
 
 const meetingInfoTemplate = () => {
+  const activeUser = JSON.parse(localStorage.getItem('activeUser'))
+  const editMeetingBtnClass = []
+
+  if (activeUser && activeUser.canUserEditMeetingInfo) {
+    editMeetingBtnClass.push('show')
+  } else {
+    editMeetingBtnClass.push('hide')
+  }
+
   return `
     <div class="meeting-info__header">
       <div class="meeting-info__header_left-part">
@@ -12,7 +21,7 @@ const meetingInfoTemplate = () => {
         </button>
         <h2 id="meetingInfoTitle">Meeting name</h2>
       </div>
-      <button id="goToEditMeetingPageBtn">
+      <button id="goToEditMeetingPageBtn" class="${editMeetingBtnClass.join(' ')}">
         <img src="${editMeeting}" alt="">
       </button>
     </div>  

@@ -4,10 +4,20 @@ import {Select} from '@components/UI'
 import './calendarHeaderFunctionality'
 import './style.scss'
 
-const createCalendarHeaderContentTemplate = () => {
+export const createCalendarHeaderContentTemplate = () => {
+  const activeUser = JSON.parse(localStorage.getItem('activeUser'))
+  const newMeetingBtnClasses = ['calendar-header__right-part_button']
+
+  if (activeUser && activeUser.canUserCreateMeeting) {
+    newMeetingBtnClasses.push('show')
+  } else {
+    newMeetingBtnClasses.push('hide')
+  }
+
   return `
     <h1 class="calendar-header__title">Calendar</h1>
     <div class="calendar-header__right-part">
+      <button id="logoutBtn" class="calendar-header__right-part_button">Logout</button>
       ${Select({
         className: 'calendar-header__right-part_select',
         optionsArr: users,
@@ -17,7 +27,7 @@ const createCalendarHeaderContentTemplate = () => {
       })} 
       <button
         id="goToAddNewMeetingPageBtn"
-        class="calendar-header__right-part_add-event-button">
+        class="${newMeetingBtnClasses.join(' ')}">
         New event +</button>
     </div>
   `
