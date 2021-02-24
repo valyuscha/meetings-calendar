@@ -1,6 +1,11 @@
 # Calendar of meetings
 This app is created for office work. It creates the schedule of office meetings.
 
+### Project start instruction:
+First of all you need to clone this repository on your computer. Then you need to write `npm install` in your 
+terminal. That's all. Now you can write `npm run start` or `npm start` in your terminal and then the website would be
+ opened.
+
 ### Instructions for using the web app:
 1. When you load project at first time you can see calendar page with empty table.
 1. You can create new meeting by clicking `New event+` button. Then you will see form which helps to create new event. Notice that you cannot create new meeting which has no name and/or no one participant.
