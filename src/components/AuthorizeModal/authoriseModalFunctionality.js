@@ -8,7 +8,7 @@ export const authorizeModalFunctionality = () => {
   const $deleteMeetingBtns = document.querySelectorAll('.delete-meeting')
   const $goToEditMeetingPageBtn = document.getElementById('goToEditMeetingPageBtn')
 
-  $confirmAuthBtn.addEventListener('click', () => {
+  const login = () => {
     const users = JSON.parse(localStorage.getItem('usersList'))
     if (users) {
       users.filter(user => {
@@ -44,5 +44,10 @@ export const authorizeModalFunctionality = () => {
         }
       })
     }
+  }
+
+  $confirmAuthBtn.addEventListener('click', login)
+  $confirmAuthBtn.addEventListener('unload', () => {
+    $confirmAuthBtn.removeEventListener('click', login)
   })
 }

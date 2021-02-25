@@ -1,0 +1,28 @@
+.modal {
+  &__confirm {
+    &-logout-message {
+      font-weight: 600;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    &-buttons {
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        height: 38px;
+        width: 48%;
+        border: 2px solid rgba(0, 0, 0, .5);
+        border-radius: 5px;
+        background: #f6f6f6;
+        cursor: pointer;
+
+        &:hover {
+          background: #e8e8e8;
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import {AddNewMeetingPage, CalendarPage} from '@pages'
 import {addClass, removeClass} from '@/helpers'
+import {ConfirmLogoutModal} from '@components'
 import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
-import AuthorizeModal from '@components/AuthorizeModal/AuthorizeModal'
 
 document.addEventListener('DOMContentLoaded', () => {
   const $meetingsFilterSelect = document.getElementById('meetingsFilterSelect')
@@ -36,9 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const logout = () => {
-    localStorage.removeItem('activeUser')
-    addClass(AuthorizeModal, 'show')
-    removeClass(AuthorizeModal, 'hide')
+    addClass(ConfirmLogoutModal, 'show')
+    removeClass(ConfirmLogoutModal, 'hide')
   }
 
   $logoutBtn.addEventListener('click', logout)
