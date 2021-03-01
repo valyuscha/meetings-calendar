@@ -1,11 +1,13 @@
 import {errorIcon, hideErrorMessage} from '@assets'
 import {addClass} from '@/helpers'
 import {Checkboxes, Input, Select} from '@components/UI'
-import {days, time, users} from '@server'
+import {days, time} from '@server'
 import './meetingEditPageFunctionality'
 import './style.scss'
 
 export const meetingEditPageTemplate = () => {
+  const users = JSON.parse(localStorage.getItem('usersList'))
+
   return `
     <h2 id="editMeetingTitle" class="meeting-edit__title">Edit meeting</h2>  
     <div class="meeting-edit__field-wrapper">
@@ -55,4 +57,4 @@ MeetingEditPage.innerHTML = meetingEditPageTemplate()
 addClass(MeetingEditPage, 'meeting-edit__wrapper')
 addClass(MeetingEditPage, 'hide')
 
-export default MeetingEditPage
+// export default MeetingEditPage

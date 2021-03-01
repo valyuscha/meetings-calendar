@@ -1,10 +1,11 @@
-import {AddNewMeetingPage, CalendarPage} from '@pages/index'
 import {addClass, removeClass} from '@/helpers'
-import {
-  displayPlanedMeetings
-} from '@components/CalendarTable/CalendarTable'
+import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
+import {createCalendarTableTemplate} from '@components/CalendarTable/calendarTableLayout'
+import CalendarTable from '@components/CalendarTable/calendarTableLayout'
+import {AddNewMeetingPage, CalendarPage} from '@pages/index'
+import {baseURL, getAllMeetings, addNewMeeting} from '@server'
 
-document.addEventListener('DOMContentLoaded', () => {
+export const addNewMeetingPageFunctionality = () => {
   const $cancelBtn = document.getElementById('cancelBtn')
   const $addNewMeetingBtn = document.getElementById('addNewMeetingBtn')
   const $newEventNameInput = document.getElementById('newEventName')
@@ -120,24 +121,31 @@ document.addEventListener('DOMContentLoaded', () => {
     isFormValid = $newEventNameInput.isValid && formData.participants.length
 
     if (isFormValid) {
-      const meetingsArr = JSON.parse(localStorage.getItem('meetingsArr'))
-
-      meetingsArr.push(formData)
-
       $calendarTableCell.forEach(cell => {
         if (cell.id === formData.id) {
-          if (cell.innerHTML !== '') {
-            showAddMeetingErrorMessage()
-          } else {
-            localStorage.setItem('meetingsArr', JSON.stringify(meetingsArr))
-            clearFormData()
-            hideAddMeetingErrorMessage()
-            addClass(CalendarPage, 'show')
-            removeClass(CalendarPage, 'hide')
-            addClass(AddNewMeetingPage, 'hide')
-            removeClass(AddNewMeetingPage, 'show')
-            displayPlanedMeetings(meetingsArr)
-          }
+          getAllMeetings()
+            .then(meetings => meetings.filter(meeting => meeting.data.id === cell.id))
+            .then(meeting => {
+              if (meeting.length) {
+                showAddMeetingErrorMessage()
+              } else {
+                addNewMeeting(formData)
+                  .then(getAllMeetings)
+                  .then(meetings => {
+                    localStorage.setItem('meetings', JSON.stringify(meetings))
+                    CalendarTable.innerHTML = createCalendarTableTemplate()
+                    displayPlanedMeetings(meetings)
+                  })
+                  .then(() => {
+                    clearFormData()
+                    hideAddMeetingErrorMessage()
+                    addClass(CalendarPage, 'show')
+                    removeClass(CalendarPage, 'hide')
+                    addClass(AddNewMeetingPage, 'hide')
+                    removeClass(AddNewMeetingPage, 'show')
+                  })
+              }
+            })
         }
       })
     }
@@ -154,4 +162,4 @@ document.addEventListener('DOMContentLoaded', () => {
   $hideAddMeetingErrorMessage.addEventListener('unload', () => {
     $hideAddMeetingErrorMessage.removeEventListener('click', hideAddMeetingErrorMessage)
   })
-})
+}

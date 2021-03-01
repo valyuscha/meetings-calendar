@@ -1,11 +1,12 @@
 import {Input, Select, Checkboxes} from '@components/UI'
 import {addClass} from '@/helpers'
-import {days, time, users} from '@server'
+import {days, time} from '@server'
 import {errorIcon, hideErrorMessage} from '@assets'
-import './addNewMeetingPageFunctionality'
 import './style.scss'
 
-const addNewMeetingPageTemplate = () => {
+export const addNewMeetingPageTemplate = () => {
+  const users = JSON.parse(localStorage.getItem('usersList'))
+
   return `
     <h2 id="addMeetingTitle" class="add-meeting__title">Create new meeting</h2>
     <div class="add-meeting__field-wrapper">

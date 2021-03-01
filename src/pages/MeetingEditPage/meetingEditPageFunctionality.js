@@ -1,8 +1,10 @@
-import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable.js'
 import {addClass, removeClass} from '@/helpers'
-import {MeetingInfoPage, MeetingEditPage} from '@pages'
+import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
+import CalendarTable, {createCalendarTableTemplate} from '@components/CalendarTable/calendarTableLayout'
+import {MeetingInfoPage} from '@pages'
+import {getAllMeetings, editMeetingInfo} from '@server'
 
-document.addEventListener('DOMContentLoaded', () => {
+export const addMeetingEditPageFunctionality = () => {
   const $editMeetingCancelBtn = document.getElementById('editMeetingCancelBtn')
   const $editMeetingBtn = document.getElementById('editMeetingBtn')
   const $editMeetingTitle = document.getElementById('editMeetingTitle')
@@ -21,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const $dayValue = document.getElementById('dayValue')
   const $timeValue = document.getElementById('timeValue')
   const $participantsValue = document.getElementById('participantsValue')
+  const $meetingEditPage = document.getElementById('meetingEditPage')
   let isFormValid = false
 
 
@@ -49,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const cancelMeetingEdit = () => {
-    addClass(MeetingEditPage, 'hide')
-    removeClass(MeetingEditPage, 'show')
+    addClass($meetingEditPage, 'hide')
+    removeClass($meetingEditPage, 'show')
     addClass(MeetingInfoPage, 'show')
     removeClass(MeetingInfoPage, 'hide')
     hideEditMeetingErrorMessage()
@@ -102,27 +105,37 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isFormValid) {
       $calendarTableCell.forEach(cell => {
         if (cell.id === formData.id) {
-          if (cell.innerHTML !== '' && cell.id !== localStorage.getItem('editMeetingId')) {
-            showEditMeetingErrorMessage()
-          } else {
-            const editMeetingsArr = JSON.parse(localStorage.getItem('editedArr'))
-            editMeetingsArr.push(formData)
-            localStorage.setItem('meetingsArr', JSON.stringify(editMeetingsArr))
-            $meetingInfoTitle.textContent = formData.meetingName
-            $meetingNameValue.textContent = formData.meetingName
-            $dayValue.textContent = formData.selectedDay
-            $timeValue.textContent = formData.selectedTime
-            $participantsValue.innerHTML = formData.participants.map(participant => {
-              return `<li class="meeting-info__item_value">${participant}</li>`
-            }).join(' ')
-
-            hideEditMeetingErrorMessage()
-            addClass(MeetingInfoPage, 'show')
-            removeClass(MeetingInfoPage, 'hide')
-            addClass(MeetingEditPage, 'hide')
-            removeClass(MeetingEditPage, 'show')
-            displayPlanedMeetings(editMeetingsArr)
-          }
+          getAllMeetings()
+            .then(meetings => meetings.filter(meeting => meeting.data.id === cell.id))
+            .then(meeting => {
+              const editMeeting = JSON.parse(localStorage.getItem('editMeeting'))
+              if (cell.id !== editMeeting.data.id && meeting.length) {
+                showEditMeetingErrorMessage()
+              } else {
+                editMeetingInfo(formData, editMeeting.id)
+                  .then(getAllMeetings)
+                  .then(meetings => {
+                    localStorage.setItem('meetings', JSON.stringify(meetings))
+                    CalendarTable.innerHTML = createCalendarTableTemplate()
+                    displayPlanedMeetings(meetings)
+                  })
+                  .then(() => {
+                    $meetingInfoTitle.textContent = formData.meetingName
+                    $meetingNameValue.textContent = formData.meetingName
+                    $dayValue.textContent = formData.selectedDay
+                    $timeValue.textContent = formData.selectedTime
+                    $participantsValue.innerHTML = formData.participants
+                      .map(participant => `
+                    <li class="meeting-info__item_value">${participant}</li>
+                  `).join(' ')
+                    hideEditMeetingErrorMessage()
+                    addClass(MeetingInfoPage, 'show')
+                    removeClass(MeetingInfoPage, 'hide')
+                    addClass($meetingEditPage, 'hide')
+                    removeClass($meetingEditPage, 'show')
+                  })
+              }
+            })
         }
       })
     }
@@ -142,4 +155,4 @@ document.addEventListener('DOMContentLoaded', () => {
   $hideEditMeetingErrorMessage.addEventListener('unload', () => {
     $hideEditMeetingErrorMessage.removeEventListener('click', hideEditMeetingErrorMessage)
   })
-})
+}

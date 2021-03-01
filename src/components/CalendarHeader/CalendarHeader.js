@@ -1,7 +1,5 @@
-import {users} from '@server'
 import {addClass} from '@/helpers'
 import {Select} from '@components/UI'
-import './calendarHeaderFunctionality'
 import './style.scss'
 
 export const createCalendarHeaderContentTemplate = () => {
@@ -14,17 +12,21 @@ export const createCalendarHeaderContentTemplate = () => {
     newMeetingBtnClasses.push('hide')
   }
 
+  const users = JSON.parse(localStorage.getItem('usersList'))
+
   return `
     <h1 class="calendar-header__title">Calendar</h1>
     <div class="calendar-header__right-part">
       <button id="logoutBtn" class="calendar-header__right-part_button">Logout</button>
-      ${Select({
-        className: 'calendar-header__right-part_select',
-        optionsArr: users,
-        extraOption: 'All members', 
-        id: 'meetingsFilterSelect',
-        extraOptionId: 'allMembers'
-      })} 
+      <div id="headerUsersSelect">
+        ${Select({
+          className: 'calendar-header__right-part_select',
+          optionsArr: users,
+          extraOption: 'All members',
+          id: 'meetingsFilterSelect',
+          extraOptionId: 'allMembers'
+        })} 
+      </div>
       <button
         id="goToAddNewMeetingPageBtn"
         class="${newMeetingBtnClasses.join(' ')}">

@@ -3,35 +3,35 @@ import {addClass, removeClass} from '@/helpers'
 import {ConfirmLogoutModal} from '@components'
 import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
 
-document.addEventListener('DOMContentLoaded', () => {
+export const addCalendarHeaderFunctionality = () => {
   const $meetingsFilterSelect = document.getElementById('meetingsFilterSelect')
   const $goToAddNewMeetingPageBtn = document.getElementById('goToAddNewMeetingPageBtn')
   const $logoutBtn = document.getElementById('logoutBtn')
 
   const goToAddNewMeetingPage = () => {
-    const meetingsArr = JSON.parse(localStorage.getItem('meetingsArr'))
+    const meetings = JSON.parse(localStorage.getItem('meetings'))
 
     addClass(CalendarPage, 'hide')
     removeClass(CalendarPage, 'show')
     addClass(AddNewMeetingPage, 'show')
     removeClass(AddNewMeetingPage, 'hide')
     $meetingsFilterSelect.value = 'All members'
-    displayPlanedMeetings(meetingsArr)
+    displayPlanedMeetings(meetings)
   }
 
   const filterMeetings = () => {
-    const meetingsArr = JSON.parse(localStorage.getItem('meetingsArr'))
+    const meetings = JSON.parse(localStorage.getItem('meetings'))
 
     if ($meetingsFilterSelect.value !== 'All members') {
-      const filteredMeetingsArrByParticipants = meetingsArr.filter(meeting => {
-        if (meeting.participants.includes($meetingsFilterSelect.value)) {
+      const filteredMeetingsArrByParticipants = meetings.filter(meeting => {
+        if (meeting.data.participants.includes($meetingsFilterSelect.value)) {
           return meeting
         }
       })
 
       displayPlanedMeetings(filteredMeetingsArrByParticipants)
     } else {
-      displayPlanedMeetings(meetingsArr)
+      displayPlanedMeetings(meetings)
     }
   }
 
@@ -56,4 +56,4 @@ document.addEventListener('DOMContentLoaded', () => {
   $meetingsFilterSelect.addEventListener('unload', () => {
     $meetingsFilterSelect.removeEventListener('click', filterMeetings)
   })
-})
+}

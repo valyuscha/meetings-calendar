@@ -1,4 +1,5 @@
 import {CalendarPage} from '@pages'
+import {baseURL, getAllMeetings, deleteMeeting as deleteMeetingFromServer} from '@server'
 import {displayPlanedMeetings} from './CalendarTable'
 import {addClass, removeClass} from '@/helpers'
 
@@ -8,6 +9,7 @@ export const calendarTableFunctionality = () => {
   const $cancelDeleteMeetingBtn = document.getElementById('cancelDeleteMeetingBtn')
   const $confirmDeleteMeetingBtn = document.getElementById('confirmDeleteMeetingBtn')
   const $calendarTableCell = document.querySelectorAll('.calendar-table__cell_meetings')
+  const $modalMessageMeetingName = document.getElementById('modalMessageMeetingName')
   const $meetingInfoPage = document.getElementById('meetingInfoPage')
   const $meetingInfoTitle = document.getElementById('meetingInfoTitle')
   const $meetingNameLabel = document.getElementById('meetingNameLabel')
@@ -24,40 +26,38 @@ export const calendarTableFunctionality = () => {
   const $timeSelect = document.getElementById('editTimeSelect')
   const $checkboxes = document.querySelectorAll('.meeting-edit__checkbox')
   const $meetingsFilterSelect = document.getElementById('meetingsFilterSelect')
-  const $modalMessageMeetingName = document.getElementById('modalMessageMeetingName')
-  const meetingsArr = JSON.parse(localStorage.getItem('meetingsArr'))
+  const meetings = JSON.parse(localStorage.getItem('meetings'))
 
   const cancelDeleteMeeting = () => {
     addClass($confirmModal, 'hide')
     removeClass($confirmModal, 'show')
   }
 
-  const confirmDeleteMeeting = (changedMeetingsArr) => {
-    localStorage.setItem('meetingsArr', JSON.stringify(changedMeetingsArr))
-    displayPlanedMeetings(changedMeetingsArr)
-    addClass($confirmModal, 'hide')
-    removeClass($confirmModal, 'show')
+  const confirmDeleteMeeting = (meeting) => {
+    deleteMeetingFromServer(meeting)
+      .then(getAllMeetings)
+      .then(meetings => {
+        localStorage.setItem('meetings', JSON.stringify(meetings))
+        displayPlanedMeetings(meetings)
+        addClass($confirmModal, 'hide')
+        removeClass($confirmModal, 'show')
+      })
   }
 
   const deleteMeeting = (button) => {
     addClass($confirmModal, 'show')
     removeClass($confirmModal, 'hide')
-    const changedMeetingsArr = meetingsArr.filter(meeting => {
-      if (meeting.id !== button.id) {
-        return meeting
-      } else {
-        $modalMessageMeetingName.innerText = meeting.meetingName
-      }
-    })
+    const deleteMeeting = meetings.filter(meeting => meeting.data.id === button.id)
+    $modalMessageMeetingName.innerText = `${deleteMeeting[0].data.meetingName}`
 
-    $cancelDeleteMeetingBtn.addEventListener('click', cancelDeleteMeeting)
+      $cancelDeleteMeetingBtn.addEventListener('click', cancelDeleteMeeting)
     $cancelDeleteMeetingBtn.addEventListener('unload', () => {
-      $cancelDeleteMeetingBtn.removeEventListener('click', confirmDeleteMeeting)
+      $cancelDeleteMeetingBtn.removeEventListener('click', cancelDeleteMeeting)
     })
 
-    $confirmDeleteMeetingBtn.addEventListener('click', () => confirmDeleteMeeting(changedMeetingsArr))
+    $confirmDeleteMeetingBtn.addEventListener('click', () => confirmDeleteMeeting(deleteMeeting))
     $confirmDeleteMeetingBtn.addEventListener('unload', () => {
-      $confirmDeleteMeetingBtn.removeEventListener('click', () => confirmDeleteMeeting(changedMeetingsArr))
+      $confirmDeleteMeetingBtn.removeEventListener('click', () => confirmDeleteMeeting(deleteMeeting))
     })
   }
 
@@ -68,46 +68,46 @@ export const calendarTableFunctionality = () => {
     })
   })
 
-  $calendarTableCell.forEach(cell => {
-    if (meetingsArr && meetingsArr.length) {
-      meetingsArr.map(meeting => {
-        if (cell.id !== meeting.id) {
-          return
-        }
-        cell.addEventListener('click', (event) => {
-          const tagName = event.target.tagName.toLowerCase()
-          if (tagName !== 'img' && tagName !== 'button') {
-            localStorage.setItem('editMeetingId', cell.id)
-            addClass($meetingInfoPage, 'show')
-            removeClass($meetingInfoPage, 'hide')
-            addClass(CalendarPage, 'hide')
-            removeClass(CalendarPage, 'show')
-            $meetingsFilterSelect.value = 'All members'
-            displayPlanedMeetings(meetingsArr)
-            $meetingInfoTitle.textContent = meeting.meetingName
-            $meetingNameLabel.textContent = 'Meeting name:'
-            $meetingNameValue.textContent = meeting.meetingName
-            $dayLabel.textContent = 'Day:'
-            $dayValue.textContent = meeting.selectedDay
-            $timeLabel.textContent = 'Time:'
-            $timeValue.textContent = meeting.selectedTime
-            $participantsLabel.textContent = 'Participants:'
-            $participantsValue.innerHTML = meeting.participants.map(participant => {
-              return `<li class="meeting-info__item_value">${participant}</li>`
-            }).join(' ')
-            $editMeetingTitle.innerText = meeting.meetingName
-            $meetingEditName.value = meeting.meetingName
-            $daysSelect.value = meeting.selectedDay
-            $timeSelect.value = meeting.selectedTime
-            $checkboxes.forEach(checkbox => {
-              const checkboxField = checkbox.childNodes[3]
-              checkboxField.checked = meeting.participants.includes(checkboxField.id)
-            })
-          }
+  const showEditMeetingInfo = (event, meeting) => {
+    const tagName = event.target.tagName.toLowerCase()
+    if (tagName !== 'img' && tagName !== 'button') {
+      localStorage.setItem('editMeeting', JSON.stringify(meeting))
+      addClass($meetingInfoPage, 'show')
+      removeClass($meetingInfoPage, 'hide')
+      addClass(CalendarPage, 'hide')
+      removeClass(CalendarPage, 'show')
+      $meetingsFilterSelect.value = 'All members'
+      displayPlanedMeetings(meetings)
+      $meetingInfoTitle.textContent = meeting.data.meetingName
+      $meetingNameLabel.textContent = 'Meeting name:'
+      $meetingNameValue.textContent = meeting.data.meetingName
+      $dayLabel.textContent = 'Day:'
+      $dayValue.textContent = meeting.data.selectedDay
+      $timeLabel.textContent = 'Time:'
+      $timeValue.textContent = meeting.data.selectedTime
+      $participantsLabel.textContent = 'Participants:'
+      $participantsValue.innerHTML = meeting.data.participants.map(participant => {
+        return `<li class="meeting-info__item_value">${participant}</li>`
+      }).join(' ')
+      $editMeetingTitle.innerText = meeting.data.meetingName
+      $meetingEditName.value = meeting.data.meetingName
+      $daysSelect.value = meeting.data.selectedDay
+      $timeSelect.value = meeting.data.selectedTime
+      $checkboxes.forEach(checkbox => {
+        const checkboxField = checkbox.childNodes[3]
+        checkboxField.checked = meeting.data.participants.includes(checkboxField.id)
+      })
+    }
+  }
 
-          const editMeetingsArr = meetingsArr.filter(meeting => meeting.id !== cell.id)
-          localStorage.setItem('editedArr', JSON.stringify(editMeetingsArr))
-        })
+  $calendarTableCell.forEach(cell => {
+    if (meetings && meetings.length) {
+      meetings.map(meeting => {
+        if (cell.id === meeting.data.id) {
+          cell.addEventListener('click', (event) => {
+            showEditMeetingInfo(event, meeting, cell)
+          })
+        }
       })
     }
   })

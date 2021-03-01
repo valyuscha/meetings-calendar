@@ -1,6 +1,5 @@
 import {editMeeting, goBack} from '@assets'
 import {addClass} from '@/helpers'
-import './meetingInfoPageFunctionality'
 import './style.scss'
 
 const meetingInfoTemplate = () => {
@@ -43,7 +42,7 @@ const meetingInfoTemplate = () => {
         <li class="meeting-info__item_value">item value</li>
       </ul>
     </div>
-  ` 
+  `
 }
 
 const MeetingInfoPage = document.createElement('div')

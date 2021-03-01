@@ -1,35 +1,75 @@
 import AuthorizeModal from '@components/AuthorizeModal/AuthorizeModal'
+import {Modal, Select} from '@components/UI'
+import {createAuthModalTemplate} from '@components/AuthorizeModal/AuthorizeModal'
+import {addNewMeetingPageTemplate} from '@pages/AddNewMeetingPage/AddNewMeetingPage'
+import {meetingEditPageTemplate} from '@pages/MeetingEditPage/MeetingEditPage'
 import {addClass} from '@/helpers'
-import {users} from '@server'
+import {getAllUsers, getAllMeetings} from '@server'
+import {addCalendarHeaderFunctionality} from '@components/CalendarHeader/calendarHeaderFunctionality'
+import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
+import {addConfirmLogoutModalFunctionality} from '@components/ConfirmLogoutModal/confirmLgoutModalFunctionality'
+import {addNewMeetingPageFunctionality} from '@pages/AddNewMeetingPage/addNewMeetingPageFunctionality'
+import {addMeetingInfoPageFunctionality} from '@pages/MeetingInfoPage/meetingInfoPageFunctionality'
+import {addMeetingEditPageFunctionality} from '@pages/MeetingEditPage/meetingEditPageFunctionality'
 
 import {
   CalendarPage,
   AddNewMeetingPage,
-  MeetingInfoPage,
-  MeetingEditPage
+  MeetingInfoPage
 } from '@pages'
 import './styles.scss'
 
-const $rootBlock = document.getElementById('root')
+const MeetingEditPage = document.createElement('div')
 
-const $virtualDom = document.createElement('div')
-$virtualDom.appendChild(CalendarPage)
-$virtualDom.appendChild(AddNewMeetingPage)
-$virtualDom.appendChild(MeetingInfoPage)
-$virtualDom.appendChild(MeetingEditPage)
-$virtualDom.appendChild(AuthorizeModal)
+const render = async () => {
+  const $rootBlock = document.getElementById('root')
 
-const meetingsArr = JSON.parse(localStorage.getItem('meetingsArr'))
+  const users = await getAllUsers()
+  await localStorage.setItem('usersList', JSON.stringify(users))
+  const meetings = await getAllMeetings()
+  await localStorage.setItem('meetings', JSON.stringify(meetings))
 
-if (!meetingsArr) {
-  localStorage.setItem('meetingsArr', JSON.stringify([]))
+  MeetingEditPage.id = 'meetingEditPage'
+  MeetingEditPage.innerHTML = meetingEditPageTemplate()
+  addClass(MeetingEditPage, 'meeting-edit__wrapper')
+  addClass(MeetingEditPage, 'hide')
+
+  $rootBlock.appendChild(CalendarPage)
+  $rootBlock.appendChild(AddNewMeetingPage)
+  $rootBlock.appendChild(MeetingInfoPage)
+  $rootBlock.appendChild(MeetingEditPage)
+  $rootBlock.appendChild(AuthorizeModal)
 }
 
-localStorage.setItem('usersList', JSON.stringify(users))
 const activeUser = JSON.parse(localStorage.getItem('activeUser'))
 
 if (activeUser) {
   addClass(AuthorizeModal, 'hide')
 }
 
-$rootBlock.appendChild($virtualDom)
+render()
+  .then(() => {
+    AuthorizeModal.innerHTML = Modal(createAuthModalTemplate())
+    AddNewMeetingPage.innerHTML = addNewMeetingPageTemplate()
+    MeetingEditPage.innerHTML = meetingEditPageTemplate()
+  })
+  .then(getAllUsers)
+  .then(users => {
+    const $headerUsersSelect = document.getElementById('headerUsersSelect')
+    $headerUsersSelect.innerHTML = `
+      ${Select({
+      className: 'calendar-header__right-part_select',
+      optionsArr: users,
+      extraOption: 'All members',
+      id: 'meetingsFilterSelect',
+      extraOptionId: 'allMembers'
+    })} 
+    `
+  })
+  .then(getAllMeetings)
+  .then(displayPlanedMeetings)
+  .then(addCalendarHeaderFunctionality)
+  .then(addConfirmLogoutModalFunctionality)
+  .then(addNewMeetingPageFunctionality)
+  .then(addMeetingInfoPageFunctionality)
+  .then(addMeetingEditPageFunctionality)

@@ -1,10 +1,11 @@
-import {CalendarPage, MeetingEditPage} from '@pages'
+import {CalendarPage} from '@pages'
 import {addClass, removeClass} from '@/helpers'
 
-document.addEventListener('DOMContentLoaded', () => {
+export const addMeetingInfoPageFunctionality = () => {
   const $meetingInfoPage = document.getElementById('meetingInfoPage')
   const $goBackToCalendarPageBtn = document.getElementById('goBackToCalendarPageBtn')
   const $goToEditMeetingPageBtn = document.getElementById('goToEditMeetingPageBtn')
+  const $meetingEditPage = document.getElementById('meetingEditPage')
 
   const goBackToCalendarPage = () => {
     addClass(CalendarPage, 'show')
@@ -16,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const goToEditMeetingPage = () => {
     addClass($meetingInfoPage, 'hide')
     removeClass($meetingInfoPage, 'show')
-    addClass(MeetingEditPage, 'show')
-    removeClass(MeetingEditPage, 'hide')
+    addClass($meetingEditPage, 'show')
+    removeClass($meetingEditPage, 'hide')
   }
 
   $goBackToCalendarPageBtn.addEventListener('click', goBackToCalendarPage)
@@ -29,4 +30,4 @@ document.addEventListener('DOMContentLoaded', () => {
   $goToEditMeetingPageBtn.addEventListener('unload', () => {
     $goToEditMeetingPageBtn.removeEventListener('click', goToEditMeetingPage)
   })
-})
+}
