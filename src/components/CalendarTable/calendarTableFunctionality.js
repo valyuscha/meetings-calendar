@@ -1,7 +1,8 @@
 import {CalendarPage} from '@pages'
-import {baseURL, getAllMeetings, deleteMeeting as deleteMeetingFromServer} from '@server'
+import {baseURL} from '@server'
 import {displayPlanedMeetings} from './CalendarTable'
 import {addClass, removeClass} from '@/helpers'
+import {serverEventsMethods} from '@/serverCommunication'
 
 export const calendarTableFunctionality = () => {
   const $deleteMeeting = document.querySelectorAll('.delete-meeting')
@@ -34,8 +35,8 @@ export const calendarTableFunctionality = () => {
   }
 
   const confirmDeleteMeeting = (meeting) => {
-    deleteMeetingFromServer(meeting)
-      .then(getAllMeetings)
+    serverEventsMethods.deleteMeeting(meeting)
+      .then(serverEventsMethods.getAllMeetings)
       .then(meetings => {
         localStorage.setItem('meetings', JSON.stringify(meetings))
         displayPlanedMeetings(meetings)

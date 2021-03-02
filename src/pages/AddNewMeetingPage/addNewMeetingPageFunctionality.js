@@ -2,8 +2,9 @@ import {addClass, removeClass} from '@/helpers'
 import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
 import {createCalendarTableTemplate} from '@components/CalendarTable/calendarTableLayout'
 import CalendarTable from '@components/CalendarTable/calendarTableLayout'
-import {AddNewMeetingPage, CalendarPage} from '@pages/index'
-import {baseURL, getAllMeetings, addNewMeeting} from '@server'
+import {AddNewMeetingPage, CalendarPage} from '@pages'
+import {baseURL} from '@server'
+import {serverEventsMethods} from '@/serverCommunication'
 
 export const addNewMeetingPageFunctionality = () => {
   const $cancelBtn = document.getElementById('cancelBtn')
@@ -123,14 +124,14 @@ export const addNewMeetingPageFunctionality = () => {
     if (isFormValid) {
       $calendarTableCell.forEach(cell => {
         if (cell.id === formData.id) {
-          getAllMeetings()
+         serverEventsMethods.getAllMeetings()
             .then(meetings => meetings.filter(meeting => meeting.data.id === cell.id))
             .then(meeting => {
               if (meeting.length) {
                 showAddMeetingErrorMessage()
               } else {
-                addNewMeeting(formData)
-                  .then(getAllMeetings)
+                serverEventsMethods.addNewMeeting(formData)
+                  .then(serverEventsMethods.getAllMeetings)
                   .then(meetings => {
                     localStorage.setItem('meetings', JSON.stringify(meetings))
                     CalendarTable.innerHTML = createCalendarTableTemplate()

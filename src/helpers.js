@@ -5,3 +5,4 @@ export const addClass = (elem, className) => {
 export const removeClass = (elem, className) => {
   elem.classList.remove(className)
 }
+

@@ -2,7 +2,7 @@ import {addClass, removeClass} from '@/helpers'
 import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
 import CalendarTable, {createCalendarTableTemplate} from '@components/CalendarTable/calendarTableLayout'
 import {MeetingInfoPage} from '@pages'
-import {getAllMeetings, editMeetingInfo} from '@server'
+import {serverEventsMethods} from '@/serverCommunication'
 
 export const addMeetingEditPageFunctionality = () => {
   const $editMeetingCancelBtn = document.getElementById('editMeetingCancelBtn')
@@ -105,15 +105,15 @@ export const addMeetingEditPageFunctionality = () => {
     if (isFormValid) {
       $calendarTableCell.forEach(cell => {
         if (cell.id === formData.id) {
-          getAllMeetings()
+          serverEventsMethods.getAllMeetings()
             .then(meetings => meetings.filter(meeting => meeting.data.id === cell.id))
             .then(meeting => {
               const editMeeting = JSON.parse(localStorage.getItem('editMeeting'))
               if (cell.id !== editMeeting.data.id && meeting.length) {
                 showEditMeetingErrorMessage()
               } else {
-                editMeetingInfo(formData, editMeeting.id)
-                  .then(getAllMeetings)
+                serverEventsMethods.editMeetingInfo(formData, editMeeting.id)
+                  .then(serverEventsMethods.getAllMeetings)
                   .then(meetings => {
                     localStorage.setItem('meetings', JSON.stringify(meetings))
                     CalendarTable.innerHTML = createCalendarTableTemplate()

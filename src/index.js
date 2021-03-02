@@ -4,7 +4,7 @@ import {createAuthModalTemplate} from '@components/AuthorizeModal/AuthorizeModal
 import {addNewMeetingPageTemplate} from '@pages/AddNewMeetingPage/AddNewMeetingPage'
 import {meetingEditPageTemplate} from '@pages/MeetingEditPage/MeetingEditPage'
 import {addClass} from '@/helpers'
-import {getAllUsers, getAllMeetings} from '@server'
+import {serverEventsMethods} from '@/serverCommunication'
 import {addCalendarHeaderFunctionality} from '@components/CalendarHeader/calendarHeaderFunctionality'
 import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
 import {addConfirmLogoutModalFunctionality} from '@components/ConfirmLogoutModal/confirmLgoutModalFunctionality'
@@ -24,9 +24,9 @@ const MeetingEditPage = document.createElement('div')
 const render = async () => {
   const $rootBlock = document.getElementById('root')
 
-  const users = await getAllUsers()
+  const users = await serverEventsMethods.getAllUsers()
   await localStorage.setItem('usersList', JSON.stringify(users))
-  const meetings = await getAllMeetings()
+  const meetings = await serverEventsMethods.getAllMeetings()
   await localStorage.setItem('meetings', JSON.stringify(meetings))
 
   MeetingEditPage.id = 'meetingEditPage'
@@ -53,7 +53,7 @@ render()
     AddNewMeetingPage.innerHTML = addNewMeetingPageTemplate()
     MeetingEditPage.innerHTML = meetingEditPageTemplate()
   })
-  .then(getAllUsers)
+  .then(serverEventsMethods.getAllUsers)
   .then(users => {
     const $headerUsersSelect = document.getElementById('headerUsersSelect')
     $headerUsersSelect.innerHTML = `
@@ -66,7 +66,7 @@ render()
     })} 
     `
   })
-  .then(getAllMeetings)
+  .then(serverEventsMethods.getAllMeetings)
   .then(displayPlanedMeetings)
   .then(addCalendarHeaderFunctionality)
   .then(addConfirmLogoutModalFunctionality)
