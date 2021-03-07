@@ -1,8 +1,4 @@
-const checkboxesLayout = (props) => {
-  return props && props.checkboxesList ? props.checkboxesList.map(checkbox => {
-
-
-    return `
+const checkboxesLayout = (props) => (props && props.checkboxesList ? props.checkboxesList.map((checkbox) => `
       <div
         id="${checkbox.id}"
         class="${props.className ? props.className : ''}">
@@ -11,15 +7,13 @@ const checkboxesLayout = (props) => {
         </label>
         <input type="checkbox" id="${checkbox.name ? checkbox.name : ''}">
       </div>
-    `
-  }).join(' ') : `
+    `).join(' ') : `
     <div class="${props.className ? props.className : ''}">
       <label for="${props && props.id ? props.id : 'checkbox'}">
         ${props && props.label ? props.label : 'Checkbox'}
       </label>
       <input type="checkbox" id="${props && props.id ? props.id : 'checkbox'}">
     </div>  
-  `
-}
+  `)
 
 export default checkboxesLayout

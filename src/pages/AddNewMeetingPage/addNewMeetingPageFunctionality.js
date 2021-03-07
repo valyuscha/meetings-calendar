@@ -1,18 +1,18 @@
-import {addClass, removeClass} from '@/helpers'
-import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
-import {createCalendarTableTemplate} from '@components/CalendarTable/calendarTableLayout'
-import CalendarTable from '@components/CalendarTable/calendarTableLayout'
-import {AddNewMeetingPage, CalendarPage} from '@pages'
-import {baseURL} from '@server'
-import {serverEventsMethods} from '@/serverCommunication'
+import { addClass, removeClass } from '@/helpers'
+import { createFormData } from '@/utils'
+import { displayPlanedMeetings } from '@components/CalendarTable/CalendarTable'
+import CalendarTable, { createCalendarTableTemplate } from '@components/CalendarTable/calendarTableLayout'
+
+import { AddNewMeetingPage, CalendarPage } from '@pages'
+import { serverEventsMethods } from '@/serverCommunication'
 
 export const addNewMeetingPageFunctionality = () => {
   const $cancelBtn = document.getElementById('cancelBtn')
   const $addNewMeetingBtn = document.getElementById('addNewMeetingBtn')
+  const $checkboxes = document.getElementById('addNewMeetingCheckboxes')
   const $newEventNameInput = document.getElementById('newEventName')
   const $daysSelect = document.getElementById('daysSelect')
   const $timeSelect = document.getElementById('timeSelect')
-  const $checkboxes = document.getElementById('addNewMeetingCheckboxes')
   const $nameFieldErrorMessage = document.getElementById('addNewMeetingNameErrorMessage')
   const $checkboxesErrorMessage = document.getElementById('addNewMeetingCheckboxesErrorMessage')
   const $addNewMeetingErrorMessage = document.getElementById('addNewMeetingErrorMessage')
@@ -50,9 +50,9 @@ export const addNewMeetingPageFunctionality = () => {
     $daysSelect.value = 'Monday'
     $timeSelect.value = '10:00'
 
-    $checkboxes.childNodes.forEach(checkboxWrapper => {
+    $checkboxes.childNodes.forEach((checkboxWrapper) => {
       if (checkboxWrapper.tagName && checkboxWrapper.tagName.toLowerCase() === 'div') {
-        checkboxWrapper.childNodes.forEach(checkbox => {
+        checkboxWrapper.childNodes.forEach((checkbox) => {
           if (checkbox.tagName && checkbox.tagName.toLowerCase() === 'input') {
             checkbox.checked = false
           }
@@ -76,16 +76,16 @@ export const addNewMeetingPageFunctionality = () => {
   })
 
   const createAndSaveMeetingData = () => {
-    const formData = {}
-    formData.meetingName = $newEventNameInput.value
-    formData.selectedDay = $daysSelect.value
-    formData.selectedTime = $timeSelect.value
-    formData.participants = []
-    formData.id = `${$timeSelect.value} ${$daysSelect.value.slice(0, 3)}`
+    const formData = createFormData(
+      $newEventNameInput.value,
+      $daysSelect.value,
+      $timeSelect.value,
+      `${$timeSelect.value} ${$daysSelect.value.slice(0, 3)}`
+    )
 
-    $checkboxes.childNodes.forEach(checkboxWrapper => {
+    $checkboxes.childNodes.forEach((checkboxWrapper) => {
       if (checkboxWrapper.tagName && checkboxWrapper.tagName.toLowerCase() === 'div') {
-        checkboxWrapper.childNodes.forEach(checkbox => {
+        checkboxWrapper.childNodes.forEach((checkbox) => {
           if (checkbox.tagName && checkbox.tagName.toLowerCase() === 'input') {
             if (checkbox.checked) {
               formData.participants.push(checkbox.id)
@@ -122,17 +122,17 @@ export const addNewMeetingPageFunctionality = () => {
     isFormValid = $newEventNameInput.isValid && formData.participants.length
 
     if (isFormValid) {
-      $calendarTableCell.forEach(cell => {
+      $calendarTableCell.forEach((cell) => {
         if (cell.id === formData.id) {
-         serverEventsMethods.getAllMeetings()
-            .then(meetings => meetings.filter(meeting => meeting.data.id === cell.id))
-            .then(meeting => {
+          serverEventsMethods.getAllMeetings()
+            .then((meetings) => meetings.filter((meeting) => meeting.data.id === cell.id))
+            .then((meeting) => {
               if (meeting.length) {
                 showAddMeetingErrorMessage()
               } else {
                 serverEventsMethods.addNewMeeting(formData)
                   .then(serverEventsMethods.getAllMeetings)
-                  .then(meetings => {
+                  .then((meetings) => {
                     localStorage.setItem('meetings', JSON.stringify(meetings))
                     CalendarTable.innerHTML = createCalendarTableTemplate()
                     displayPlanedMeetings(meetings)

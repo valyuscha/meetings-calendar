@@ -1,5 +1,5 @@
-import {addClass} from '@/helpers'
-import {Select} from '@components/UI'
+import { addClass } from '@/helpers'
+import { Select } from '@components/UI'
 import './style.scss'
 
 export const createCalendarHeaderContentTemplate = () => {
@@ -20,12 +20,12 @@ export const createCalendarHeaderContentTemplate = () => {
       <button id="logoutBtn" class="calendar-header__right-part_button">Logout</button>
       <div id="headerUsersSelect">
         ${Select({
-          className: 'calendar-header__right-part_select',
-          optionsArr: users,
-          extraOption: 'All members',
-          id: 'meetingsFilterSelect',
-          extraOptionId: 'allMembers'
-        })} 
+    className: 'calendar-header__right-part_select',
+    optionsArr: users,
+    extraOption: 'All members',
+    id: 'meetingsFilterSelect',
+    extraOptionId: 'allMembers',
+  })} 
       </div>
       <button
         id="goToAddNewMeetingPageBtn"

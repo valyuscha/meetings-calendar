@@ -1,5 +1,5 @@
-import {CalendarPage} from '@pages'
-import {addClass, removeClass} from '@/helpers'
+import { CalendarPage } from '@pages'
+import { addClass, removeClass } from '@/helpers'
 
 export const addMeetingInfoPageFunctionality = () => {
   const $meetingInfoPage = document.getElementById('meetingInfoPage')

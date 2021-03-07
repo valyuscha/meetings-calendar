@@ -1,7 +1,7 @@
-import {AddNewMeetingPage, CalendarPage} from '@pages'
-import {addClass, removeClass} from '@/helpers'
-import {ConfirmLogoutModal} from '@components'
-import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
+import { AddNewMeetingPage, CalendarPage } from '@pages'
+import { addClass, removeClass } from '@/helpers'
+import { ConfirmLogoutModal } from '@components'
+import { displayPlanedMeetings } from '@components/CalendarTable/CalendarTable'
 
 export const addCalendarHeaderFunctionality = () => {
   const $meetingsFilterSelect = document.getElementById('meetingsFilterSelect')
@@ -23,7 +23,7 @@ export const addCalendarHeaderFunctionality = () => {
     const meetings = JSON.parse(localStorage.getItem('meetings'))
 
     if ($meetingsFilterSelect.value !== 'All members') {
-      const filteredMeetingsArrByParticipants = meetings.filter(meeting => {
+      const filteredMeetingsArrByParticipants = meetings.filter((meeting) => {
         if (meeting.data.participants.includes($meetingsFilterSelect.value)) {
           return meeting
         }

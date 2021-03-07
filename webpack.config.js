@@ -1,6 +1,6 @@
 const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
   entry: ['@babel/polyfill', './index.js'],
   output: {
     filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
     extensions: ['.js', '.json'],
@@ -18,21 +18,21 @@ module.exports = {
       '@server': path.resolve(__dirname, 'src/server'),
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@assets': path.resolve(__dirname, 'src/assets'),
-      '@': path.resolve(__dirname, 'src')
-    }
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   optimization: {
     splitChunks: {
-      chunks: 'all'
-    }
+      chunks: 'all',
+    },
   },
   devServer: {
-    port: 3000
+    port: 3000,
   },
   performance: {
     hints: false,
     maxEntrypointSize: 512000,
-    maxAssetSize: 512000
+    maxAssetSize: 512000,
   },
   plugins: [
     new HTMLWebpackPlugin({
@@ -42,8 +42,8 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].[hash].css'
-    })
+      filename: '[name].[hash].css',
+    }),
   ],
   module: {
     rules: [
@@ -53,21 +53,21 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              reloadAll: true
-            }
+              reloadAll: true,
+            },
           },
           'css-loader',
-          'sass-loader'
-        ]
+          'sass-loader',
+        ],
       },
       {
         test: /\.(ttf|woff|woff2|ext)$/,
         use:
-          ['file-loader']
+          ['file-loader'],
       },
       {
         test: /\.(png|jpg|jpeg|svg|gif|ico)$/,
-        use: ['file-loader']
+        use: ['file-loader'],
       },
       {
         test: /\.js$/,
@@ -76,14 +76,14 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: [
-              '@babel/preset-env'
+              '@babel/preset-env',
             ],
             plugins: [
-              '@babel/plugin-proposal-class-properties'
-            ]
-          }
-        }
-      }
-    ]
-  }
+              '@babel/plugin-proposal-class-properties',
+            ],
+          },
+        },
+      },
+    ],
+  },
 }

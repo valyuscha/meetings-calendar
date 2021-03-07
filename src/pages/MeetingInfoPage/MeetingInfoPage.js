@@ -1,5 +1,5 @@
-import {editMeeting, goBack} from '@assets'
-import {addClass} from '@/helpers'
+import { editMeeting, goBack } from '@assets'
+import { addClass } from '@/helpers'
 import './style.scss'
 
 const meetingInfoTemplate = () => {

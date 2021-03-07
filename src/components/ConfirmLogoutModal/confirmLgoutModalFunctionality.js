@@ -1,6 +1,6 @@
 import AuthorizeModal from '@components/AuthorizeModal/AuthorizeModal'
+import { addClass, removeClass } from '@/helpers'
 import ConfirmLogoutModal from './ConfirmLogoutModal'
-import {addClass, removeClass} from '@/helpers'
 
 export const addConfirmLogoutModalFunctionality = () => {
   const $cancelLogoutBtn = document.getElementById('cancelLogoutBtn')

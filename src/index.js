@@ -1,21 +1,21 @@
-import AuthorizeModal from '@components/AuthorizeModal/AuthorizeModal'
-import {Modal, Select} from '@components/UI'
-import {createAuthModalTemplate} from '@components/AuthorizeModal/AuthorizeModal'
-import {addNewMeetingPageTemplate} from '@pages/AddNewMeetingPage/AddNewMeetingPage'
-import {meetingEditPageTemplate} from '@pages/MeetingEditPage/MeetingEditPage'
-import {addClass} from '@/helpers'
-import {serverEventsMethods} from '@/serverCommunication'
-import {addCalendarHeaderFunctionality} from '@components/CalendarHeader/calendarHeaderFunctionality'
-import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
-import {addConfirmLogoutModalFunctionality} from '@components/ConfirmLogoutModal/confirmLgoutModalFunctionality'
-import {addNewMeetingPageFunctionality} from '@pages/AddNewMeetingPage/addNewMeetingPageFunctionality'
-import {addMeetingInfoPageFunctionality} from '@pages/MeetingInfoPage/meetingInfoPageFunctionality'
-import {addMeetingEditPageFunctionality} from '@pages/MeetingEditPage/meetingEditPageFunctionality'
+import AuthorizeModal, { createAuthModalTemplate } from '@components/AuthorizeModal/AuthorizeModal'
+import { Modal, Select } from '@components/UI'
+
+import { addNewMeetingPageTemplate } from '@pages/AddNewMeetingPage/AddNewMeetingPage'
+import { meetingEditPageTemplate } from '@pages/MeetingEditPage/MeetingEditPage'
+import { addClass } from '@/helpers'
+import { serverEventsMethods } from '@/serverCommunication'
+import { addCalendarHeaderFunctionality } from '@components/CalendarHeader/calendarHeaderFunctionality'
+import { displayPlanedMeetings } from '@components/CalendarTable/CalendarTable'
+import { addConfirmLogoutModalFunctionality } from '@components/ConfirmLogoutModal/confirmLgoutModalFunctionality'
+import { addNewMeetingPageFunctionality } from '@pages/AddNewMeetingPage/addNewMeetingPageFunctionality'
+import { addMeetingInfoPageFunctionality } from '@pages/MeetingInfoPage/meetingInfoPageFunctionality'
+import { addMeetingEditPageFunctionality } from '@pages/MeetingEditPage/meetingEditPageFunctionality'
 
 import {
   CalendarPage,
   AddNewMeetingPage,
-  MeetingInfoPage
+  MeetingInfoPage,
 } from '@pages'
 import './styles.scss'
 
@@ -54,16 +54,16 @@ render()
     MeetingEditPage.innerHTML = meetingEditPageTemplate()
   })
   .then(serverEventsMethods.getAllUsers)
-  .then(users => {
+  .then((users) => {
     const $headerUsersSelect = document.getElementById('headerUsersSelect')
     $headerUsersSelect.innerHTML = `
       ${Select({
-      className: 'calendar-header__right-part_select',
-      optionsArr: users,
-      extraOption: 'All members',
-      id: 'meetingsFilterSelect',
-      extraOptionId: 'allMembers'
-    })} 
+    className: 'calendar-header__right-part_select',
+    optionsArr: users,
+    extraOption: 'All members',
+    id: 'meetingsFilterSelect',
+    extraOptionId: 'allMembers',
+  })} 
     `
   })
   .then(serverEventsMethods.getAllMeetings)

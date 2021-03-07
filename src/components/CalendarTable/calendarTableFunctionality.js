@@ -1,8 +1,8 @@
-import {CalendarPage} from '@pages'
-import {baseURL} from '@server'
-import {displayPlanedMeetings} from './CalendarTable'
-import {addClass, removeClass} from '@/helpers'
-import {serverEventsMethods} from '@/serverCommunication'
+import { CalendarPage } from '@pages'
+import { baseURL } from '@server'
+import { addClass, removeClass } from '@/helpers'
+import { serverEventsMethods } from '@/serverCommunication'
+import { displayPlanedMeetings } from './CalendarTable'
 
 export const calendarTableFunctionality = () => {
   const $deleteMeeting = document.querySelectorAll('.delete-meeting')
@@ -37,7 +37,7 @@ export const calendarTableFunctionality = () => {
   const confirmDeleteMeeting = (meeting) => {
     serverEventsMethods.deleteMeeting(meeting)
       .then(serverEventsMethods.getAllMeetings)
-      .then(meetings => {
+      .then((meetings) => {
         localStorage.setItem('meetings', JSON.stringify(meetings))
         displayPlanedMeetings(meetings)
         addClass($confirmModal, 'hide')
@@ -48,10 +48,10 @@ export const calendarTableFunctionality = () => {
   const deleteMeeting = (button) => {
     addClass($confirmModal, 'show')
     removeClass($confirmModal, 'hide')
-    const deleteMeeting = meetings.filter(meeting => meeting.data.id === button.id)
+    const deleteMeeting = meetings.filter((meeting) => meeting.data.id === button.id)
     $modalMessageMeetingName.innerText = `${deleteMeeting[0].data.meetingName}`
 
-      $cancelDeleteMeetingBtn.addEventListener('click', cancelDeleteMeeting)
+    $cancelDeleteMeetingBtn.addEventListener('click', cancelDeleteMeeting)
     $cancelDeleteMeetingBtn.addEventListener('unload', () => {
       $cancelDeleteMeetingBtn.removeEventListener('click', cancelDeleteMeeting)
     })
@@ -62,7 +62,7 @@ export const calendarTableFunctionality = () => {
     })
   }
 
-  $deleteMeeting.forEach(button => {
+  $deleteMeeting.forEach((button) => {
     button.addEventListener('click', () => deleteMeeting(button))
     button.addEventListener('unload', () => {
       button.removeEventListener('click', () => deleteMeeting(button))
@@ -87,23 +87,21 @@ export const calendarTableFunctionality = () => {
       $timeLabel.textContent = 'Time:'
       $timeValue.textContent = meeting.data.selectedTime
       $participantsLabel.textContent = 'Participants:'
-      $participantsValue.innerHTML = meeting.data.participants.map(participant => {
-        return `<li class="meeting-info__item_value">${participant}</li>`
-      }).join(' ')
+      $participantsValue.innerHTML = meeting.data.participants.map((participant) => `<li class="meeting-info__item_value">${participant}</li>`).join(' ')
       $editMeetingTitle.innerText = meeting.data.meetingName
       $meetingEditName.value = meeting.data.meetingName
       $daysSelect.value = meeting.data.selectedDay
       $timeSelect.value = meeting.data.selectedTime
-      $checkboxes.forEach(checkbox => {
+      $checkboxes.forEach((checkbox) => {
         const checkboxField = checkbox.childNodes[3]
         checkboxField.checked = meeting.data.participants.includes(checkboxField.id)
       })
     }
   }
 
-  $calendarTableCell.forEach(cell => {
+  $calendarTableCell.forEach((cell) => {
     if (meetings && meetings.length) {
-      meetings.map(meeting => {
+      meetings.map((meeting) => {
         if (cell.id === meeting.data.id) {
           cell.addEventListener('click', (event) => {
             showEditMeetingInfo(event, meeting, cell)

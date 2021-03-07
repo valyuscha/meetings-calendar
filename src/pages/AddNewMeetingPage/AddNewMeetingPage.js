@@ -1,7 +1,7 @@
-import {Input, Select, Checkboxes} from '@components/UI'
-import {addClass} from '@/helpers'
-import {days, time} from '@server'
-import {errorIcon, hideErrorMessage} from '@assets'
+import { Input, Select, Checkboxes } from '@components/UI'
+import { addClass } from '@/helpers'
+import { days, time } from '@server'
+import { errorIcon, hideErrorMessage } from '@assets'
 import './style.scss'
 
 export const addNewMeetingPageTemplate = () => {
@@ -11,24 +11,24 @@ export const addNewMeetingPageTemplate = () => {
     <h2 id="addMeetingTitle" class="add-meeting__title">Create new meeting</h2>
     <div class="add-meeting__field-wrapper">
       ${Input({
-        id: 'newEventName',
-        errorMessageId: 'addNewMeetingNameErrorMessage',
-        label: 'Name of the event:',
-        isValid: false,
-        isTouched: false,
-        placeholder: 'Enter the field',
-        errorMessage: 'Error'
-      })}
+    id: 'newEventName',
+    errorMessageId: 'addNewMeetingNameErrorMessage',
+    label: 'Name of the event:',
+    isValid: false,
+    isTouched: false,
+    placeholder: 'Enter the field',
+    errorMessage: 'Error',
+  })}
     </div>
     <div class="add-meeting__field-wrapper">
-      ${Select({id: 'daysSelect', optionsArr: days, label: 'Day:'})}
+      ${Select({ id: 'daysSelect', optionsArr: days, label: 'Day:' })}
     </div>
     <div class="add-meeting__field-wrapper">
-      ${Select({id: 'timeSelect', optionsArr: time, label: 'Time:'})}
+      ${Select({ id: 'timeSelect', optionsArr: time, label: 'Time:' })}
     </div>
     <div id="addNewMeetingCheckboxes" class="add-meeting__checkboxes_wrapper">
       <p class="add-meeting__checkboxes_title">Participants:</p>
-      ${Checkboxes({className: 'add-meeting__checkbox', checkboxesList: users})}
+      ${Checkboxes({ className: 'add-meeting__checkbox', checkboxesList: users })}
       <p
         id="addNewMeetingCheckboxesErrorMessage"
         class="errorMessage hideErrorMessage">

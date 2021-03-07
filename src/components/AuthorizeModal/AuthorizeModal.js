@@ -1,5 +1,5 @@
-import {addClass} from '@/helpers'
-import {Modal, Select} from '@components/UI'
+import { addClass } from '@/helpers'
+import { Modal, Select } from '@components/UI'
 import './style.scss'
 
 export const createAuthModalTemplate = () => {
@@ -8,10 +8,10 @@ export const createAuthModalTemplate = () => {
   return `
     <p class="modal__auth-message">Please authorise</p>
     ${Select({
-      className: 'modal__users-select',
-      optionsArr: users,
-      id: 'modalMeetingsSelect',
-    })}
+    className: 'modal__users-select',
+    optionsArr: users,
+    id: 'modalMeetingsSelect',
+  })}
     <button id="confirmAuthBtn" class="modal__confirm-button">Confirm</button>
   `
 }

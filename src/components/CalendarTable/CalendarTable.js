@@ -1,8 +1,6 @@
-import {time} from '@server'
-import {addClass} from '@/helpers'
-import {deleteMeeting} from '@assets'
-import {calendarTableFunctionality} from './calendarTableFunctionality'
-import {authorizeModalFunctionality} from '../AuthorizeModal/authoriseModalFunctionality'
+import { deleteMeeting } from '@assets'
+import { calendarTableFunctionality } from './calendarTableFunctionality'
+import { authorizeModalFunctionality } from '../AuthorizeModal/authoriseModalFunctionality'
 import './style.scss'
 
 const meetingsArr = JSON.parse(localStorage.getItem('meetingsArr'))
@@ -19,15 +17,15 @@ export const displayPlanedMeetings = (planedMeetingsArr) => {
     deleteMeetingBtnClasses.push('hide')
   }
 
-  $calendarTableCell.forEach(cell => {
+  $calendarTableCell.forEach((cell) => {
     cell.innerHTML = ''
   })
 
   const planedMeetingsCells = []
 
-  $calendarTableCell.forEach(cell => {
+  $calendarTableCell.forEach((cell) => {
     if (planedMeetingsArr !== null) {
-      planedMeetingsArr.map(meeting => {
+      planedMeetingsArr.map((meeting) => {
         if (cell.id === meeting.data.id) {
           planedMeetingsCells.push(cell)
           cell.innerHTML = `

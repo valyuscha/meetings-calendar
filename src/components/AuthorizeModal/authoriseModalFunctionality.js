@@ -1,4 +1,4 @@
-import {addClass, removeClass} from '@/helpers'
+import { addClass, removeClass } from '@/helpers'
 import AuthorizeModal from './AuthorizeModal'
 
 export const authorizeModalFunctionality = () => {
@@ -10,7 +10,7 @@ export const authorizeModalFunctionality = () => {
 
   const login = () => {
     const users = JSON.parse(localStorage.getItem('usersList'))
-    users.filter(user => {
+    users.filter((user) => {
       if (user.name === $modalMeetingsSelect.value) {
         localStorage.setItem('activeUser', JSON.stringify(user))
         addClass(AuthorizeModal, 'hide')
@@ -23,7 +23,7 @@ export const authorizeModalFunctionality = () => {
           removeClass($goToAddNewMeetingPageBtn, 'show')
         }
 
-        $deleteMeetingBtns.forEach(btn => {
+        $deleteMeetingBtns.forEach((btn) => {
           if (user.canUserDeleteMeeting) {
             addClass(btn, 'show')
             removeClass(btn, 'hide')

@@ -1,5 +1,5 @@
-import {addClass} from '@/helpers'
-import {Modal} from '@components/UI'
+import { addClass } from '@/helpers'
+import { Modal } from '@components/UI'
 import './style.scss'
 
 const ConfirmLogoutModal = document.createElement('div')

@@ -26,4 +26,8 @@ editing the meeting. If you click `Edit` button the meeting would be edited and 
 1. Webpack
 1. Babel 
 
-(All data of created meetings is saved in your localStorage)
+### Scripts of application launch process
+1. start - use `npm run start` or `npm start` to run the project on `localhost:3000`.
+1. build - use `npm run build` or `npm build` to build the project into production (minified) version.
+1. dev - use `npm run dev` or `npm dev` to build the project into development version.
+1. test - use `npm run test` or `npm test` to run all tests of the project.

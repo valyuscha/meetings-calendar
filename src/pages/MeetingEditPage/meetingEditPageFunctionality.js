@@ -1,8 +1,9 @@
-import {addClass, removeClass} from '@/helpers'
-import {displayPlanedMeetings} from '@components/CalendarTable/CalendarTable'
-import CalendarTable, {createCalendarTableTemplate} from '@components/CalendarTable/calendarTableLayout'
-import {MeetingInfoPage} from '@pages'
-import {serverEventsMethods} from '@/serverCommunication'
+import { addClass, removeClass } from '@/helpers'
+import { createFormData } from '@/utils'
+import { displayPlanedMeetings } from '@components/CalendarTable/CalendarTable'
+import CalendarTable, { createCalendarTableTemplate } from '@components/CalendarTable/calendarTableLayout'
+import { MeetingInfoPage } from '@pages'
+import { serverEventsMethods } from '@/serverCommunication'
 
 export const addMeetingEditPageFunctionality = () => {
   const $editMeetingCancelBtn = document.getElementById('editMeetingCancelBtn')
@@ -16,8 +17,7 @@ export const addMeetingEditPageFunctionality = () => {
   const $checkboxesErrorMessage = document.getElementById('checkboxesErrorMessage')
   const $editMeetingErrorMessage = document.getElementById('meetingEditErrorMessage')
   const $calendarTableCell = document.querySelectorAll('.calendar-table__cell_meetings')
-  const $hideEditMeetingErrorMessage = document.getElementById
-  ('hideEditMeetingErrorMessage')
+  const $hideEditMeetingErrorMessage = document.getElementById('hideEditMeetingErrorMessage')
   const $meetingInfoTitle = document.getElementById('meetingInfoTitle')
   const $meetingNameValue = document.getElementById('meetingNameValue')
   const $dayValue = document.getElementById('dayValue')
@@ -25,7 +25,6 @@ export const addMeetingEditPageFunctionality = () => {
   const $participantsValue = document.getElementById('participantsValue')
   const $meetingEditPage = document.getElementById('meetingEditPage')
   let isFormValid = false
-
 
   const countMarginForTitle = () => {
     if ($editMeetingErrorMessage.classList.contains('show-edit-meeting-error-message')) {
@@ -60,14 +59,14 @@ export const addMeetingEditPageFunctionality = () => {
   }
 
   const editMeeting = () => {
-    const formData = {}
-    formData.meetingName = $meetingEditName.value
-    formData.selectedDay = $daysSelect.value
-    formData.selectedTime = $timeSelect.value
-    formData.participants = []
-    formData.id = `${$timeSelect.value} ${$daysSelect.value.slice(0, 3)}`
+    const formData = createFormData(
+      $meetingEditName.value,
+      $daysSelect.value,
+      $timeSelect.value,
+      `${$timeSelect.value} ${$daysSelect.value.slice(0, 3)}`
+    )
 
-    $checkboxes.childNodes.forEach(checkbox => {
+    $checkboxes.childNodes.forEach((checkbox) => {
       if (checkbox.classList && checkbox.classList.contains('meeting-edit__checkbox')) {
         const checkboxField = checkbox.childNodes[3]
         if (checkboxField.checked) {
@@ -103,18 +102,18 @@ export const addMeetingEditPageFunctionality = () => {
     isFormValid = $meetingEditName.isValid && formData.participants.length !== 0
 
     if (isFormValid) {
-      $calendarTableCell.forEach(cell => {
+      $calendarTableCell.forEach((cell) => {
         if (cell.id === formData.id) {
           serverEventsMethods.getAllMeetings()
-            .then(meetings => meetings.filter(meeting => meeting.data.id === cell.id))
-            .then(meeting => {
+            .then((meetings) => meetings.filter((meeting) => meeting.data.id === cell.id))
+            .then((meeting) => {
               const editMeeting = JSON.parse(localStorage.getItem('editMeeting'))
               if (cell.id !== editMeeting.data.id && meeting.length) {
                 showEditMeetingErrorMessage()
               } else {
                 serverEventsMethods.editMeetingInfo(formData, editMeeting.id)
                   .then(serverEventsMethods.getAllMeetings)
-                  .then(meetings => {
+                  .then((meetings) => {
                     localStorage.setItem('meetings', JSON.stringify(meetings))
                     CalendarTable.innerHTML = createCalendarTableTemplate()
                     displayPlanedMeetings(meetings)
@@ -125,7 +124,7 @@ export const addMeetingEditPageFunctionality = () => {
                     $dayValue.textContent = formData.selectedDay
                     $timeValue.textContent = formData.selectedTime
                     $participantsValue.innerHTML = formData.participants
-                      .map(participant => `
+                      .map((participant) => `
                     <li class="meeting-info__item_value">${participant}</li>
                   `).join(' ')
                     hideEditMeetingErrorMessage()

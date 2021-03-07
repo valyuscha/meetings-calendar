@@ -1,5 +1,4 @@
-const inputTemplate = (props) => {
-  return `
+const inputTemplate = (props) => `
     <label>${props && props.label ? props.label : ''}</label>
     <div>
       <input 
@@ -13,6 +12,5 @@ const inputTemplate = (props) => {
       </p>
     </div>
   `
-}
 
 export default inputTemplate

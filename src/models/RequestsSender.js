@@ -1,6 +1,6 @@
-import {baseURL} from '@server'
+import {baseURL} from '../server'
 import ResponseDebugger from './ResponseDebugger'
-import {Admin, User} from '@/models'
+import {Admin, User} from './index'
 
 class RequestsSender extends ResponseDebugger {
   getAllMeetings = async () => {
@@ -44,6 +44,8 @@ class RequestsSender extends ResponseDebugger {
     })
 
     this.getResponse(response)
+
+    return await response.json()
   }
 
   deleteMeeting = async (meeting) => {
@@ -59,6 +61,8 @@ class RequestsSender extends ResponseDebugger {
     })
 
     this.getResponse(response)
+
+    return deleteData
   }
 
   getAllUsers = async () => {

@@ -1,10 +1,10 @@
 import {
   CalendarHeader,
   ConfirmMeetingDeletingModal,
-  ConfirmLogoutModal
+  ConfirmLogoutModal,
 } from '@components'
 
-import {addClass} from '@/helpers'
+import { addClass } from '@/helpers'
 import CalendarTable from '@components/CalendarTable/calendarTableLayout'
 
 const CalendarPage = document.createElement('div')
